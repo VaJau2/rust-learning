@@ -1,4 +1,4 @@
-##Rust learning project
+## Rust learning project
 
 Uses raylib v3
 
