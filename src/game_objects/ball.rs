@@ -1,7 +1,6 @@
 use raylib::prelude::*; 
 use raylib::consts::MouseButton::*; 
-use raylib::consts::KeyboardKey::KEY_SPACE;
-use crate::GameObject;
+use crate::game_objects::GameObject;
 
 const POSITION_AMOUNT: f32 = 0.025;
 
@@ -23,9 +22,6 @@ impl GameObject for Ball {
 
         if raylib_handle.is_mouse_button_pressed(MOUSE_RIGHT_BUTTON) {
             self.position = raylib_handle.get_mouse_position();
-        }
-    
-        if raylib_handle.is_key_pressed(KEY_SPACE) {
             self.color = if self.color == Color::GREEN { Color::YELLOW } else { Color::GREEN };
         }
     }
