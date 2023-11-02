@@ -1,32 +1,37 @@
 use raylib::prelude::*; 
-use raylib::consts::MouseButton::*; 
 use crate::game_objects::GameObject;
-
-const POSITION_AMOUNT: f32 = 0.025;
+use crate::{SCREEN_WIDTH, SCREEN_HEIGHT};
 
 pub struct Ball {
     pub position: Vector2,
-    pub speed: f32,
+    pub speed: Vector2,
     pub radius: f32,
-    pub color: Color,
+}
+
+impl Ball {
+    pub fn create() -> Ball {
+        Ball {
+            position: Vector2::new(SCREEN_WIDTH / 2.0, SCREEN_HEIGHT / 2.0),
+            speed: Vector2::new(4.0, 3.0),
+            radius: 40.0,
+        }
+    }
 }
 
 impl GameObject for Ball {
-    fn update_input(self: &mut Ball, raylib_handle: &RaylibHandle) {
-        if raylib_handle.is_mouse_button_down(MOUSE_LEFT_BUTTON) {
-            self.position = self.position.lerp(
-                raylib_handle.get_mouse_position(), 
-                POSITION_AMOUNT
-            );
+    fn update_input(self: &mut Ball, _raylib_handle: &RaylibHandle) {
+        self.position += self.speed;
+
+        if self.position.x >= SCREEN_WIDTH - self.radius || self.position.x <= self.radius {
+            self.speed.x *= -1.0;
         }
 
-        if raylib_handle.is_mouse_button_pressed(MOUSE_RIGHT_BUTTON) {
-            self.position = raylib_handle.get_mouse_position();
-            self.color = if self.color == Color::GREEN { Color::YELLOW } else { Color::GREEN };
+        if self.position.y >= SCREEN_HEIGHT - self.radius || self.position.y <= self.radius {
+            self.speed.y *= -1.0;
         }
     }
 
     fn draw(self: &Ball, draw_handle: &mut RaylibDrawHandle) {
-        draw_handle.draw_circle_v(self.position, self.radius, self.color);
+        draw_handle.draw_circle_v(self.position, self.radius, Color::GREEN);
     }
 }

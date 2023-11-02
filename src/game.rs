@@ -62,5 +62,7 @@ impl Game {
         for object in self.objects.iter_mut() {
             object.draw(&mut draw_handle);
         }
+
+        draw_handle.draw_fps(10, 10);
     }
 }
